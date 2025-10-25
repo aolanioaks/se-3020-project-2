@@ -14,7 +14,7 @@ and movie list.
 
 My application is a read/watched movie app where you can add books or movies
 by the title, rating and author/director. This will add them to a list where you
-can mark then read/watched or leave them blank if you havent gotten to them. 
+can mark them done or leave them blank if you havent gotten to them. 
 The functionality I added was the motion detector to change the theme between
 Forest, Sunrise, Midnight and Ocean. The themes are implemented using context and 
 the books and movies are stored with Async storage. Wether the user closes out the 
@@ -27,4 +27,3 @@ According to the HIG guidelines, "consistent interface elements make it easier t
 
 
 
-# se-3020-project-2
