@@ -1,14 +1,16 @@
 import { View, StyleSheet, Alert, Text } from "react-native";
 import { useState, useEffect, useMemo } from "react";
-import MovieListCard from '../components/MovieList';
-import AddMovieContainer from '../components/AddMovie';
 import { useLocalSearchParams } from "expo-router";
 import { useTheme } from "@/context/themeContext";
 import useShake from "@/hooks/useShake";
 import useAsyncStorageState from "@/hooks/useAsyncStorage"; 
+import AddItem from "@/components/AddItem";
+import ItemList from "@/components/ItemList";
 
 
-type Movie = { title: string; rating: number; watched: boolean };
+
+
+type Movie = { title: string; rating: number; done: boolean };
 
 export default function MovieScreen() {
   const { theme, cycleTheme } = useTheme(); 
@@ -25,9 +27,9 @@ export default function MovieScreen() {
   useEffect(() => {
     if (movies.length == 0) {
       setMovies([
-        { title: "Clueless by Amy Heckerling", rating: 5, watched: false },
-        { title: "Harry Potter by David Heyman", rating: 4, watched: true },
-        { title: "Annabelle by John R. Leonetti", rating: 5, watched: false },
+        { title: "Clueless by Amy Heckerling", rating: 5, done: false },
+        { title: "Harry Potter by David Heyman", rating: 4, done: true },
+        { title: "Annabelle by John R. Leonetti", rating: 5, done: false },
       ]);
     }
     if (alertMsg) Alert.alert("From Books", String(alertMsg));
@@ -39,7 +41,7 @@ export default function MovieScreen() {
     const title = titleInput.trim();
     const rating = Number(ratingInput);
     if (title && rating >= 1 && rating <= 5) {
-      setMovies([...movies, { title, rating, watched: false }]);
+      setMovies([...movies, { title, rating, done: false }]);
       setTitleInput("");
       setRatingInput("");
       setWriterInput("");
@@ -48,28 +50,30 @@ export default function MovieScreen() {
     }
   };
 
-  const displayedMovies = hideWatchedMovies ? movies.filter(m => !m.watched) : movies;
+  const displayedMovies = hideWatchedMovies ? movies.filter(m => !m.done) : movies;
   return (
     <View style={styles.container}>
       <View style={styles.themeBadge}><Text style={styles.themeBadgeText}>Theme: {theme.name.toUpperCase()} (shake to change)</Text></View>
 
-      <AddMovieContainer
+      <AddItem
+        itemType="Movie"
         titleInput={titleInput}
-        writerInput={writerInput}
+        secondaryInput={writerInput}
         ratingInput={ratingInput}
         setTitleInput={setTitleInput}
-        setWriterInput={setWriterInput}
+        setSecondaryInput={setWriterInput}
         setRatingInput={setRatingInput}
-        addMovie={addMovie}
+        onAdd={addMovie}
       />
 
-      <MovieListCard
+      <ItemList
+      itemType="Movie"
         styles={styles}
-        hideWatchedMovies={hideWatchedMovies}
-        setHideWatchedMovies={setHideWatchedMovies}
-        movies={movies}
-        setMovies={setMovies}
-        displayedMovies={displayedMovies}
+        hideCompleted={hideWatchedMovies}
+        setHideCompleted={setHideWatchedMovies}
+        items={movies}
+        setItems={setMovies}
+        displayedItems={displayedMovies}
       />
     </View>
   );

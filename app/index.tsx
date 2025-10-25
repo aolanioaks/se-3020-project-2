@@ -1,11 +1,11 @@
 import { Text, View, StyleSheet, Pressable, Alert, Keyboard, TouchableWithoutFeedback } from "react-native";
 import { useState, useEffect, useMemo } from "react";
 import { Link } from "expo-router";
-import AddBookContainer from "../components/AddBook";
-import BookListCard from "@/components/BookList";
 import { useTheme } from "../context/themeContext";
 import useShake from "@/hooks/useShake";
 import useAsyncStorageState from "@/hooks/useAsyncStorage"; 
+import AddItem from "@/components/AddItem";
+import ItemList from "@/components/ItemList";
 
 
 type Book = { title: string; rating: number; done: boolean };
@@ -62,24 +62,26 @@ export default function BookScreen() {
         </View>
         
         
-        <AddBookContainer
+        <AddItem
+          itemType="Book"
           titleInput={titleInput}
-          authorInput={authorInput}
+          secondaryInput={authorInput}
           ratingInput={ratingInput}
-          setAuthorInput={setAuthorInput}
-          setRatingInput={setRatingInput}
           setTitleInput={setTitleInput}
-          addBook={addBook}
+          setSecondaryInput={setAuthorInput}
+          setRatingInput={setRatingInput}
+          onAdd={addBook}
         />
         
         
-        <BookListCard
+        <ItemList
+          itemType="Book"
           styles={styles}
-          hideReadBooks={hideReadBooks}
-          setHideReadBooks={setHideReadBooks}
-          books={books}
-          setBooks={setBooks}
-          displayedBooks={displayedBooks}
+          hideCompleted={hideReadBooks}
+          setHideCompleted={setHideReadBooks}
+          items={books}
+          setItems={setBooks}
+          displayedItems={displayedBooks}
         />
         
         
